@@ -1,5 +1,11 @@
 name: Sync To Gitee
-on: page_build
+on:
+  push:
+    # push 到main分支时触发
+    branches: [main]
+  schedule:
+    # 每天触发一次
+    - cron: '0 3 * * *'
 jobs:
   sync:
     runs-on: ubuntu-latest
