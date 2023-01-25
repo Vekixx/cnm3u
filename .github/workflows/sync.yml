@@ -1,18 +1,21 @@
-name: Sync To Gitee
+name: syncToGitee
 on:
   push:
-    # push 到main分支时触发
     branches: [main]
   schedule:
-    # 每天触发一次
     - cron: '0 3 * * *'
+
 jobs:
-  sync:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: wearerequired/git-mirror-action@master
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
-        with:
-          source-repo: "git@github.com:Vekixx/cnm3u.git"
-          destination-repo: "git@gitee.com:Vekixx/cnm3u.git"
+  repo-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror the Github organization repos to Gitee.
+        uses: Yikun/hub-mirror-action@master
+        with:
+          src: 'github/Vekixx'
+          dst: 'gitee/Vekixx'
+          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+          dst_token:  ${{ secrets.GITEE_TOKEN }}
+          static_list: "learn-typescript"
+          force_update: true
+			    debug: true
